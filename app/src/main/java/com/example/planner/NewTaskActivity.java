@@ -39,6 +39,7 @@ public class NewTaskActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("ჩაწერეთ დავალების აღწერა");
         final EditText tweetContent = new EditText(this);
+        tweetContent.setText(taskView.getText().toString());
         builder.setView(tweetContent);
 
         builder.setPositiveButton("დამახსოვრება", new DialogInterface.OnClickListener() {
