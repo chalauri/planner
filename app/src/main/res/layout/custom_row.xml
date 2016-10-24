@@ -21,6 +21,7 @@
             android:layout_weight="1"
             android:text="09/05/2016"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000"
             android:textStyle="bold" />
 
                 <Button
@@ -64,6 +65,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000"
             android:textStyle="bold" />
 
 

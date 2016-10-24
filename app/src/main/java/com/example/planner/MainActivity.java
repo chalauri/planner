@@ -2,13 +2,16 @@ package com.example.planner;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements StatusChangeListe
         searchButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-           //    drawData();
+                //    drawData();
                 tasks = getData();
                 adapter.notifyDataSetChanged();
             }
@@ -250,9 +253,9 @@ public class MainActivity extends AppCompatActivity implements StatusChangeListe
             long fromDate = sdf.parse(from.getText().toString()).getTime();
             long tillDate = sdf.parse(till.getText().toString()).getTime();
             tasks.clear();
-            tasks = new TaskService().getTasks(fromDate, tillDate,tasks);
+            tasks = new TaskService().getTasks(fromDate, tillDate, tasks);
 
-            return  tasks;
+            return tasks;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -278,16 +281,37 @@ public class MainActivity extends AppCompatActivity implements StatusChangeListe
     }
 
 
-    public void deleteClick(int id) {
+    public void deleteClick(final int id) {
         System.out.println("SUCC CLICK");
         System.out.println(id);
 
-        //DELETE FROM DATABASE
-        new TaskService().deleteTask(id);
 
-        tasks = getData();
-     //   drawData();
-        adapter.notifyDataSetChanged();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                new ContextThemeWrapper(this, R.style.MyAlertDialog));
+
+        // set title
+        alertDialogBuilder.setTitle("ნამდვილად გსურთ დავალების წაშლა ?");
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("დიახ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int other_id) {
+                        new TaskService().deleteTask(id);
+                        tasks = getData();
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("არა", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
 
@@ -300,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements StatusChangeListe
 
         tasks = getData();
 
-       // drawData();
+        // drawData();
         adapter.notifyDataSetChanged();
     }
 
